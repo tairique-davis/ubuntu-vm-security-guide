@@ -209,7 +209,43 @@ A snapshot allows you to save the current state of your VM. You can return to th
 5. Name it: `linux_vm_secure`
 
 ---
+## 🧩 Optional: Additional Security Hardening
 
-Your Virtual Machine is now ready for use as a safe environment to learn Linux and begin practicing cybersecurity!
+The following steps provide extra security.
 
+### A. Secure SSH Access
+
+SSH allows encrypted remote access to the VM. We will harden SSH to reduce the attack surface and protect the confidentiality, integrity, and availability of the Virtual Machine.
+
+SSH is useful for the following reasons:
+- Installing SSH allows secure, encrypted remote administration of the VM
+- Disable root login: Root has unrestricted control. Consider disabling root login to follow the Principle of Least Privilege (PoLP) which defines that users only get the minimum permissions needed to execute tasks.
+- Disable password login: Passwords are more susceptible to brute-force attacks and credential theft.SSH key-based authentication uses public-key cryptography to provide stronger authentication
+
+#### Install and enable SSH
+```bash
+sudo apt install openssh-server -y
+sudo systemctl enable ssh
+sudo systemctl status ssh
+```
+
+#### Edit SSH configuration:
+
+```bash
+sudo nano /etc/ssh/sshd_config
+```
+
+#### Set the following values to disable Root Login:
+
+```
+PermitRootLogin no      #disables direct root login to enforce PolP
+PasswordAuthentication no
+```
+
+#### Save and apply changes:
+
+```bash
+sudo systemctl restart ssh   #restarts SSH to apply the new security config
+```
 ---
+Your Virtual Machine is now ready for use as a safe environment to learn Linux and begin practicing cybersecurity!
